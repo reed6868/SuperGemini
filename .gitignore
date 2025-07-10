@@ -1,0 +1,37 @@
+# Logs
+logs/
+*.log
+
+# Gemini operations documentation
+.geminidocs/
+.gemini_logs/
+
+# Task management (project-specific)
+./geminidocs/tasks/
+
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini
+.Spotlight-V100
+.Trashes
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
+.cache/
+
+# Backup files from install script
+SuperGemini-backup.*

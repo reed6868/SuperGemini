@@ -1,0 +1,116 @@
+---
+name: 🐛 Bug Report
+description: Report a bug or issue with SuperGemini
+title: "[Bug] "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please provide the following information
+        to help us fix it.
+
+  - type: input
+    id: supergemini-version
+    attributes:
+      label: SuperGemini Version
+      description: What version of SuperGemini are you using?
+      placeholder: v4.0.0
+    validations:
+      required: true
+
+  - type: input
+    id: gemini-cli-version
+    attributes:
+      label: Gemini CLI Version
+      description: What version of Gemini CLI are you using?
+      placeholder: Latest
+    validations:
+      required: true
+
+  - type: dropdown
+    id: operating-system
+    attributes:
+      label: Operating System
+      description: What operating system are you using?
+      options:
+        - macOS
+        - Windows
+        - Linux (Ubuntu)
+        - Linux (Other)
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: Describe what happened...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. Run command: /analyze --code
+        2. Open file X
+        3. See error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: Command should analyze code successfully...
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+      placeholder: Command failed with error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: error-messages
+    attributes:
+      label: Error Messages
+      description: Include any error messages or logs
+      placeholder: |
+        ```
+        Error: Cannot find file...
+        ```
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context about the problem here
+      placeholder: Screenshots, configuration files, etc.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched for existing issues
+          required: true
+        - label: I have provided all required information
+          required: true
+        - label: I can reproduce this issue consistently
+          required: false

@@ -1,0 +1,88 @@
+---
+name: ❓ Question
+description: Ask a question about SuperGemini usage or configuration
+title: "[Question] "
+labels: ["question", "help-wanted"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a question about SuperGemini? We're here to help!
+        **Tip:** Consider using [Discussions](../../discussions) for general
+        questions and community help.
+
+  - type: dropdown
+    id: question-type
+    attributes:
+      label: Question Type
+      description: What type of question is this?
+      options:
+        - Installation/Setup
+        - Command Usage
+        - Persona Configuration
+        - MCP Integration
+        - Troubleshooting
+        - Best Practices
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question
+      description: What would you like to know?
+      placeholder: How do I... / Why does... / What's the best way to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Provide context about what you're trying to achieve
+      placeholder: |
+        I'm trying to...
+        My setup is...
+        I've already tried...
+    validations:
+      required: false
+
+  - type: textarea
+    id: current-config
+    attributes:
+      label: Current Configuration
+      description: Share relevant configuration or commands you're using
+      placeholder: |
+        ```
+        /command --flags
+        Persona: architect
+        Gemini CLI version: latest
+        ```
+    validations:
+      required: false
+
+  - type: textarea
+    id: attempted-solutions
+    attributes:
+      label: What Have You Tried?
+      description: What solutions have you already attempted?
+      placeholder: |
+        1. I tried reading the documentation...
+        2. I searched for similar issues...
+        3. I tested with different settings...
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have read the README.md
+          required: true
+        - label: I have searched existing issues and discussions
+          required: true
+        - label: This is not a bug report (use Bug Report template instead)
+          required: true

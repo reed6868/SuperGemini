@@ -1,0 +1,121 @@
+---
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement for SuperGemini
+title: "[Feature] "
+labels: ["enhancement", "needs-discussion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a feature! Please provide details to help us
+        understand your request.
+
+  - type: dropdown
+    id: feature-type
+    attributes:
+      label: Feature Type
+      description: What type of feature are you requesting?
+      options:
+        - New Slash Command
+        - New Persona
+        - MCP Integration
+        - Configuration Enhancement
+        - Documentation Improvement
+        - Installation/Setup
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem-description
+    attributes:
+      label: Problem Description
+      description: What problem does this feature solve?
+      placeholder: I'm frustrated when I try to... because...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like to see
+      placeholder: |
+        I would like to see...
+
+        Example usage:
+        /newcommand --flag
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternative-solutions
+    attributes:
+      label: Alternative Solutions
+      description: Describe alternatives you've considered
+      placeholder: I also considered... but it doesn't work because...
+    validations:
+      required: false
+
+  - type: textarea
+    id: use-cases
+    attributes:
+      label: Use Cases
+      description: Describe specific scenarios where this would be useful
+      placeholder: |
+        1. When working on React projects...
+        2. During code reviews...
+        3. For debugging performance issues...
+    validations:
+      required: true
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples
+      description: Provide concrete examples of how this feature would work
+      placeholder: |
+        Command: /example --new-flag
+        Output: Expected behavior...
+
+        Persona usage:
+        /persona:newtype → specialized behavior
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature to you?
+      options:
+        - Nice to have
+        - Would be helpful
+        - Important for my workflow
+        - Critical/Blocking
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context, screenshots, or examples
+      placeholder: Links to similar features, mockups, related issues...
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched for existing feature requests
+          required: true
+        - label: I have provided a clear use case
+          required: true
+        - label: I'm willing to help test this feature
+          required: false
+        - label: I'm willing to help implement this feature
+          required: false
