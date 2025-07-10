@@ -22,7 +22,7 @@ check_bash_version() {
 # Script version\ nif [[ -f "VERSION" ]]; then
     SCRIPT_VERSION=$(cat VERSION | tr -d '\n')
 else
-    SCRIPT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "2.0.0")
+    SCRIPT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "1.0.0")
 fi
 
 # Constants

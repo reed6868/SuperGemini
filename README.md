@@ -61,7 +61,7 @@ cd SuperGemini
 ./install.sh --log install.log        # Log all operations
 ```
 
-**v2.0.1 Installer Features:**
+**1.0.0 Installer Features:**
 - 🔄 **Update Mode**: Preserves customizations while updating
 - 👁️ **Dry Run**: Preview changes before applying
 - 💾 **Smart Backups**: Automatic backup with timestamping
@@ -85,7 +85,7 @@ Switch between different approaches with persona flags:
 /troubleshoot --prod --persona-analyzer # Root cause analysis approach
 ```
 
-**v2.0.1 Update**: All 9 personas are now universal flags, available on every command for consistent access to specialized approaches.
+**v1.0.0 Update**: All 9 personas are now universal flags, available on every command for consistent access to specialized approaches.
 
 ### ⚡ **19 Commands**
 Development lifecycle coverage:
