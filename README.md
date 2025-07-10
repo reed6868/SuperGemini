@@ -392,7 +392,7 @@ SuperGemini provides a structured approach to using Gemini Code with specialized
 
 This project is initially refactored from [SuperClaude](https://github.com/NomenAK/SuperClaude) by [NomenAK](https://github.com/NomenAK). We sincerely thank the original author for the foundational work and inspiration.
 
-SuperClaude-master is currently in its early refactoring and update stage. We welcome more contributors to join, improve, and expand this project together!
+SuperGemini-main is currently in its early refactoring and update stage. We welcome more contributors to join, improve, and expand this project together!
 
 Feel free to submit issues, pull requests, or suggestions to help make this framework better for everyone.
 
