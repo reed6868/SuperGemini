@@ -19,7 +19,7 @@ check_bash_version() {
     fi
 }
 
-# Script version\ nif [[ -f "VERSION" ]]; then
+if [[ -f "VERSION" ]]; then
     SCRIPT_VERSION=$(cat VERSION | tr -d '\n')
 else
     SCRIPT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "1.0.0")
@@ -66,6 +66,11 @@ BACKUP_DIR=""
 INSTALLATION_PHASE=false
 
 
+GEMINI_HOME="${HOME}/.gemini"
+COMMANDS_DIR="${GEMINI_HOME}/commands"
+SETTINGS_FILE="${GEMINI_HOME}/settings.json"
+
+
 # Error/Warning tracking
 ERROR_COUNT=0
 WARNING_COUNT=0
@@ -101,13 +106,12 @@ check_dependencies() {
         echo -e "${RED}Error: Unable to detect Gemini CLI version.${NC}"
         exit 1
     fi
-    min_gemini_major=1
+    min_gemini_major=0
     if [[ "${gemini_version%%.*}" -lt $min_gemini_major ]]; then
         echo -e "${RED}Error: Gemini CLI v1+ is required. Detected: $gemini_version${NC}"
         exit 1
     fi
 }
-check_dependencies
 # Original working directory
 ORIGINAL_DIR=$(pwd)
 
@@ -870,11 +874,19 @@ detect_platform() {
 run_preflight_checks() {
     log_verbose "Running pre-flight checks..."
     
+    # Check dependencies (Node, npm, Gemini CLI)
+    check_dependencies
+    
     # Detect platform
     detect_platform
     
     # Check required commands
     local required_commands=("find" "comm" "cmp" "sort" "uniq" "basename" "dirname" "grep" "awk" "sed")
+    if ! command -v jq &>/dev/null && ! command -v python3 &>/dev/null; then
+        log_error "jq or python3 is required to modify settings.json." "preflight-check"
+        echo "Please install either 'jq' (e.g., sudo apt-get install jq) or 'python3' and try again."
+        exit 1
+    fi
     local missing_commands=()
     
     for cmd in "${required_commands[@]}"; do
@@ -891,6 +903,12 @@ run_preflight_checks() {
     if [[ ${#missing_commands[@]} -gt 0 ]]; then
         log_error "Missing required commands: ${missing_commands[*]}" "preflight-check"
         echo "Please install the missing commands and try again."
+        exit 1
+    fi
+    
+    if ! command -v jq &>/dev/null && ! command -v python3 &>/dev/null; then
+        log_error "jq or python3 is required to modify settings.json." "preflight-check"
+        echo "Please install either 'jq' (e.g., sudo apt-get install jq) or 'python3' and try again."
         exit 1
     fi
     
@@ -961,6 +979,74 @@ load_default_config() {
 
 # Load default configuration
 load_default_config
+
+# Function: register_commands_source
+# Description: Add the custom commands directory to settings.json
+# Parameters: $1 - install_dir
+# Returns: 0 on success, 1 on failure
+register_commands_source() {
+    # Ensure settings.json exists
+    [ ! -f "$SETTINGS_FILE" ] && echo "{}" > "$SETTINGS_FILE"
+
+    # Update configuration using jq if available
+    if command -v jq > /dev/null 2>&1; then
+        tmp="$(mktemp)"
+        jq --arg dir "$COMMANDS_DIR" '. + {customCommandsSourceDirectory:$dir}' \
+           "$SETTINGS_FILE" > "$tmp" && mv "$tmp" "$SETTINGS_FILE"
+    else
+        # Fallback to Python to update the configuration
+        python3 <<EOF
+import json, os
+f = os.path.expanduser("$SETTINGS_FILE")
+cfg = {}
+if os.path.exists(f):
+    with open(f) as fp:
+        cfg = json.load(fp)
+cfg["customCommandsSourceDirectory"] = os.path.expanduser("$COMMANDS_DIR")
+with open(f, "w") as fp:
+    json.dump(cfg, fp, indent=2)
+EOF
+    fi
+
+    echo "✅ settings.json updated: registered customCommandsSourceDirectory → $COMMANDS_DIR"
+    # === Auto-register customCommandsSourceDirectory END ===
+}
+
+# Function: unregister_commands_source
+# Description: Remove the custom commands directory from settings.json
+# Parameters: $1 - install_dir
+# Returns: 0 on success, 1 on failure
+unregister_commands_source() {
+    local install_dir="$1"
+    local settings_file="$install_dir/settings.json"
+
+    if [[ ! -f "$settings_file" ]]; then
+        log_verbose "settings.json not found, skipping unregister."
+        return 0
+    fi
+
+    log_verbose "Unregistering custom commands source directory..."
+
+    if command -v jq &>/dev/null; then
+        log_verbose "Using jq to update settings.json"
+        if ! jq 'del(.customCommandsSourceDirectory)' "$settings_file" > "$settings_file.tmp" && mv "$settings_file.tmp" "$settings_file"; then
+            log_error "Failed to update settings.json using jq."
+            return 1
+        fi
+    elif command -v python3 &>/dev/null; then
+        log_verbose "jq not found, using python3 to update settings.json"
+        if ! python3 -c "import json, sys; f='$settings_file'; d=json.load(open(f)); d.pop('customCommandsSourceDirectory', None); json.dump(d, open(f,'w'), indent=2)"; then
+            log_error "Failed to update settings.json using python3."
+            return 1
+        fi
+    else
+        log_error "Neither jq nor python3 are available to update settings.json."
+        return 1
+    fi
+
+    log_verbose "Successfully unregistered custom commands source from $settings_file"
+    return 0
+}
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
@@ -1836,6 +1922,11 @@ done
 if [ "$actual_files" -ge "$expected_files" ] && [ "$critical_files_ok" = true ] && [ $VERIFICATION_FAILURES -eq 0 ]; then
     # Mark installation phase as complete
     INSTALLATION_PHASE=false
+    
+    # Register the commands directory to settings.json
+    if ! register_commands_source "$INSTALL_DIR"; then
+        echo -e "${YELLOW}Warning: Failed to register custom commands directory in settings.json. Gemini CLI may not load custom commands.${NC}"
+    fi
     
     echo ""
     if [[ "$UPDATE_MODE" = true ]]; then
