@@ -43,7 +43,7 @@ SuperGemini enhances Gemini Code with:
 
 ## 🚀 Installation
 
-### Enhanced Installerv1.0.0
+### Enhanced Installer v1.0.0
 The installer provides various options:
 
 ```bash
