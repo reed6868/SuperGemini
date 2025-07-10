@@ -1,4 +1,4 @@
-# SuperGemini Commands Reference v2.0.1
+# SuperGemini Commands Referencev1.0.0
 
 ## Table of Contents
 - [Quick Start](#quick-start)
@@ -538,4 +538,4 @@ Complex feature management across sessions with automatic breakdown and recovery
 
 ---
 
-**SuperGemini v2.0.1** - 19 professional commands | 9 cognitive personas | Advanced MCP integration | Evidence-based methodology
+**SuperGeminiv1.0.0** - 19 professional commands | 9 cognitive personas | Advanced MCP integration | Evidence-based methodology

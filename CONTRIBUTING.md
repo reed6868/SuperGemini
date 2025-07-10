@@ -234,4 +234,4 @@ Contributors are recognized through:
 
 **Ready to contribute?** Create an issue or submit a PR!
 
-*SuperGemini v2.0.1 | Community-driven configuration framework*
+*SuperGeminiv1.0.0 | Community-driven configuration framework*
